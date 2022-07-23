@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "BJgSOi4QD3xcPoFr7kXMH/22Gyzy0P6rPBZWF2lbL21dZI/S9RWwz8yYIMhM5nhBlKYuK59+XjJs3ES4XFqsxg==",
+  "success": true,
+  "projectFilePath": "E:\\files\\myWorkspace\\outward_mods\\OutwardMods\\Misc\\src\\Misc.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\xllyy\\.nuget\\packages\\bepinex.baselib\\5.4.16\\bepinex.baselib.5.4.16.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\harmonyx\\2.5.7\\harmonyx.2.5.7.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\mono.cecil\\0.11.4\\mono.cecil.0.11.4.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\monomod.runtimedetour\\21.10.10.1\\monomod.runtimedetour.21.10.10.1.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\monomod.utils\\21.10.10.1\\monomod.utils.21.10.10.1.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\outward.gamelibs\\2022.5.18-r.0\\outward.gamelibs.2022.5.18-r.0.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\outward.sideloader\\3.7.14\\outward.sideloader.3.7.14.nupkg.sha512",
+    "C:\\Users\\xllyy\\.nuget\\packages\\unityengine.modules\\2020.3.26\\unityengine.modules.2020.3.26.nupkg.sha512"
+  ],
+  "logs": []
+}
