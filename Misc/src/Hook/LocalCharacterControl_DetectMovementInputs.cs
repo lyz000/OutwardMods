@@ -1,49 +1,24 @@
 ﻿using HarmonyLib;
-using SideLoader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Misc.Hook
 {
     [HarmonyPatch(typeof(LocalCharacterControl), nameof(LocalCharacterControl.DetectMovementInputs))]
     class LocalCharacterControl_DetectMovementInputs
     {
-
-        static void Postfix(LocalCharacterControl __instance)
+        static bool Prefix(LocalCharacterControl __instance)
         {
-            var characterControl = __instance;
-            var character = characterControl.Character;
-            if (characterControl.InputLocked || character.CharacterUI.ChatPanel.IsChatFocused)
+            var localCharacterControl = __instance;
+            var character = localCharacterControl.Character;
+            Settings.UseCharacterShareData(character.OwnerPlayerSys.PlayerID, (charaData) => 
             {
-                return;
-            }
-            
-            if (Misc.Sprint)
-            {
-                characterControl.m_sprintTime += Time.deltaTime;
-                if (characterControl.m_character.Sneaking)
+                // if character move distance is zero, stop sprint
+                if (ControlsInput.MoveHorizontal(charaData.playerID) == 0f && ControlsInput.MoveVertical(charaData.playerID) == 0f)
                 {
-                    characterControl.m_character.StealthInput(false);
+                    charaData.sprint = false;
                 }
-                if (characterControl.m_character.CurrentlyChargingAttack && !characterControl.m_character.CancelChargingSent)
-                {
-                    characterControl.m_character.CancelCharging();
-                }
-                characterControl.m_modifMoveInput.Normalize();
-                characterControl.m_modifMoveInput *= characterControl.m_character.Speed * 1.75f * (float)((!characterControl.m_character.IsSuperSpeedActive) ? 1 : 4);
-                characterControl.m_sprintFacing = true;
-                characterControl.m_character.SprintInput(true);
-                if (characterControl.m_character.BlockDesired)
-                {
-                    characterControl.m_character.BlockInput(false);
-                }
-            }
-
+                return 0;
+            });
+            return true;
         }
-
     }
 }

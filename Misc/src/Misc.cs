@@ -1,13 +1,6 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.Logging;
 using HarmonyLib;
 using SideLoader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace Misc
 {
@@ -18,18 +11,10 @@ namespace Misc
         public const string ModName = "Misc";
         public const string ModVersion = "1.0.0";
 
-        CharacterShareData character1 = new CharacterShareData();
-        CharacterShareData character2 = new CharacterShareData();
-        
-
-        public static class ShareData {
-            private static int pID = -1;
-            public static bool Sprint = false;
-        }
-
         internal void Awake()
         {
-            Logger.LogInfo($"{ModName} {ModVersion} awaken.");
+            ModUtil.Logger = Logger;
+            ModUtil.Logger.LogInfo($"{ModName} {ModVersion} awaken.");
 
             Settings.Init(Config);
 
@@ -39,12 +24,33 @@ namespace Misc
         internal void Update()
         {
             // Handle KeyPress
-            if (CustomKeybindings.GetKeyDown(Settings.ToggleSprint, out int playerID))
+            if (CustomKeybindings.GetKeyDown(Settings.CustomKeyName.ToggleSprint, out int playerID))
             {
-                var cha = playerID == 1 ? character1 : character2;
-                cha.PlayerID = playerID;
-                cha.Sprint = !cha.Sprint;
+                Settings.UseCharacterShareData(playerID, (charaData) =>
+                {
+                    charaData.sprint = !charaData.sprint;
+                    return 0;
+                });
             }
+
+            var keyForwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Forward, out int playerID01);
+            var keyBackwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Backward, out int playerID02);
+            var keyLeftHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Left, out int playerID03);
+            var keyRightHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Right, out int playerID04);
+            // TODO fix which player
+            if (!keyForwardHeld && !keyBackwardHeld && !keyLeftHeld && !keyRightHeld)
+            {
+                Settings.ForeachCharacterShareData((charaData) =>
+                {
+                    Settings.UseCharacterShareData(charaData.playerID, (charaData) =>
+                    {
+                        charaData.sprint = false;
+                        return 0;
+                    });
+                    return 0;
+                });
+            }
+
         }
     }
 }

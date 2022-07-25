@@ -1,23 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Misc
+﻿namespace Misc
 {
     class CharacterShareData
     {
-        public int PlayerID = -1;
-        public bool Sprint = false;
+        public int playerID = -1;
+        public bool sprint = false;
+        public CharacterShareData(int playerID)
+        {
+            this.playerID = playerID;
+        }
 
         public Character getCharacter()
         {
-            if (PlayerID < 0)
+            if (playerID < 0)
             {
                 return null;
             }
-            return PlayerID == 0 ? CharacterManager.Instance.GetFirstLocalCharacter() : CharacterManager.Instance.GetSecondLocalCharacter();
+            if (playerID == 0)
+            {
+                return CharacterManager.Instance.GetFirstLocalCharacter();
+            }
+            else if (playerID == 1)
+            {
+                return CharacterManager.Instance.GetSecondLocalCharacter();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
