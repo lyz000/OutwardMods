@@ -1,18 +1,19 @@
 ﻿using BepInEx.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using SideLoader;
 
 namespace Misc
 {
     class Settings
     {
-        private static ConfigFile Config;
         private static int Order = 0;
+        private static ConfigFile Config;
+
+        public const string SectionItem = "Item";
+        public static ConfigEntry<bool> DisplaySellPrice;
+        public static ConfigEntry<bool> DisplayDurability;
+        public static ConfigEntry<bool> ItemToCoins;
+        
 
         public static CharacterShareData CharaData0;
         public static CharacterShareData CharaData1;
@@ -30,6 +31,10 @@ namespace Misc
         public static void Init(ConfigFile config)
         {
             Config = config;
+            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), true, "Display the estimated sell price.");
+            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), true, "Display the durability for perishables.");
+            ItemToCoins = Bind(SectionItem, nameof(ItemToCoins), true, "Trans item to coins.");
+
             CharaData0 = new CharacterShareData(0);
             CharaData1 = new CharacterShareData(1);
             CharaDatas = new CharacterShareData[] { CharaData0, CharaData1 };

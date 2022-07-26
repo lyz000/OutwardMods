@@ -1,11 +1,12 @@
 ﻿using HarmonyLib;
 
-namespace Misc.Hook
+namespace Misc.Patcher
 {
-    [HarmonyPatch(typeof(LocalCharacterControl), nameof(LocalCharacterControl.DetectMovementInputs))]
-    class LocalCharacterControl_DetectMovementInputs
+    [HarmonyPatch(typeof(LocalCharacterControl))]
+    class LocalCharacterControl_Patcher
     {
-        static bool Prefix(LocalCharacterControl __instance)
+        [HarmonyPatch(nameof(LocalCharacterControl.DetectMovementInputs)), HarmonyPrefix]
+        static bool DetectMovementInputs_Prefix(LocalCharacterControl __instance)
         {
             var localCharacterControl = __instance;
             var character = localCharacterControl.Character;

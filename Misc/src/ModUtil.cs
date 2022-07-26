@@ -12,14 +12,29 @@ namespace Misc
     {
         public static ManualLogSource Logger;
 
-        public static object getFieldValue(Type type, string fieldName, object obj)
+        public static string GameTimeToDays(double p_gametime)
         {
-            return type.GetField(fieldName).GetValue(obj);
-        }
-
-        public static object getPrivateFieldValue(Type type, string fieldName, object obj)
-        {
-            return type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static).GetValue(obj);
+            string str = "";
+            int days = (int)(p_gametime / 24);
+            if (days > 0) str = $"{days}d, ";
+            int hours = (int)(p_gametime % 24);
+            str += $"{hours}h";
+            if (days == 0)
+            {
+                hours = (int)Math.Ceiling(p_gametime % 24);
+                str = $"{hours}h";
+                if (hours <= 1)
+                {
+                    int minutes = (int)(p_gametime * 60);
+                    str = $"{minutes} min";
+                    if (minutes == 0)
+                    {
+                        int seconds = (int)(p_gametime * 3600);
+                        str = $"{seconds} sec";
+                    }
+                }
+            }
+            return str;
         }
     }
 }

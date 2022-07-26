@@ -37,7 +37,7 @@ namespace Misc
             var keyBackwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Backward, out int playerID02);
             var keyLeftHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Left, out int playerID03);
             var keyRightHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Right, out int playerID04);
-            // TODO fix which player
+            // TODO fix which player Helds
             if (!keyForwardHeld && !keyBackwardHeld && !keyLeftHeld && !keyRightHeld)
             {
                 Settings.ForeachCharacterShareData((charaData) =>
