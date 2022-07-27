@@ -36,5 +36,29 @@ namespace Misc
             }
             return str;
         }
+
+        public static int getEstimatedPrice(IItemDisplay itemDisplay)
+        {
+            int sellPrice;
+            var item = itemDisplay.RefItem;
+            if (item.IsSellable)
+            {
+                if (item.ItemID == 6300030)
+                {
+                    // if item is Gold Ingot
+                    sellPrice = 100;
+                }
+                else
+                {
+                    sellPrice = Convert.ToInt32(Math.Round(itemDisplay.RefItem.RawCurrentValue * Item.DEFAULT_SELL_MODIFIER, 0));
+                }
+            }
+            else
+            {
+                sellPrice = 1;
+            }
+
+            return sellPrice;
+        }
     }
 }

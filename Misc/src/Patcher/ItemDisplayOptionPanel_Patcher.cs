@@ -29,11 +29,11 @@ namespace Misc.Patcher
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText), new Type[] { typeof(int) }), HarmonyPrefix]
-        private static bool ItemDisplayOptionPanel_GetActionText_Prefix(int _actionID, ref string __result)
+        private static bool ItemDisplayOptionPanel_GetActionText_Prefix(ItemDisplayOptionPanel __instance, int _actionID, ref string __result)
         {
             if (itemToCoinsAction.ID == _actionID)
             {
-                __result = itemToCoinsAction.Text;
+                __result = itemToCoinsAction.getActionText(__instance);
                 return false;
             }
             return true;
@@ -43,7 +43,11 @@ namespace Misc.Patcher
     internal class ItemToCoinsAction
     {
         public readonly int ID = 4300;
-        public readonly string Text = "To Coins";
+        public string getActionText(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        {
+
+            return $"To Coins({ModUtil.getEstimatedPrice(itemDisplayOptionPanel.m_activatedItemDisplay)})";
+        }
 
         public bool IsEnabled
         {
@@ -78,26 +82,10 @@ namespace Misc.Patcher
                 return;
             }
 
-            int sellPrice;
-            if (item.IsSellable)
-            {
-                if (item.ItemID == 6300030)
-                {
-                    // if item is Gold Ingot
-                    sellPrice = 100;
-                }
-                else
-                {
-                    sellPrice = Convert.ToInt32(Math.Round(itemDisplay.RefItem.RawCurrentValue * Item.DEFAULT_SELL_MODIFIER, 0));
-                }
-            }
-            else
-            {
-                sellPrice = 1;
-            }
             var character = itemDisplayOptionPanel.LocalCharacter;
             var inventory = character.Inventory;
-            inventory.AddMoney(Convert.ToInt32(sellPrice));
+            var sellPrice = ModUtil.getEstimatedPrice(itemDisplay);
+            inventory.AddMoney(sellPrice);
             inventory.TakeCurrencySound();
             character.Inventory.RemoveItem(item.ItemID, 1);
             itemDisplayOptionPanel.CharacterUI.ShowInfoNotification($"+{sellPrice} coins, total {inventory.ItemCount(9000010)} coins.");

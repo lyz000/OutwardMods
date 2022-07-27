@@ -30,9 +30,9 @@ namespace Misc
         public static void Init(ConfigFile config)
         {
             Config = config;
-            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), true, "Display the estimated sell price.");
-            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), true, "Display the durability for perishables.");
-            ItemToCoins = Bind(SectionItem, nameof(ItemToCoins), true, "Trans item to coins.");
+            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), false, "Display the estimated sell price on item detail.\n Warning: May cause performace issue!");
+            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), false, "Display the durability for perishables on item detail.\n Warning: May cause performace issue!");
+            ItemToCoins = Bind(SectionItem, nameof(ItemToCoins), true, "Add a action in item menu whitch trans item to coins.");
 
             CharaData0 = new CharacterShareData(0);
             CharaData1 = new CharacterShareData(1);
