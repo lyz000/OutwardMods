@@ -7,7 +7,7 @@ namespace Misc.Patcher
     [HarmonyPatch(typeof(ItemDetailsDisplay))]
     class ItemDetailsDisplay_Patcher
     {
-        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDetail)), HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDetail), new Type[] { typeof(int) }), HarmonyPostfix]
         static void RefreshDetail_Postfix(ItemDetailsDisplay __instance, int _rowIndex, DisplayedInfos _infoType)
         { 
             var itemDetailsDisplay = __instance;
@@ -38,7 +38,7 @@ namespace Misc.Patcher
             }
         }
 
-        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDisplay)), HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDisplay), new Type[] { typeof(IItemDisplay) }), HarmonyPostfix]
         static void RefreshDisplay_Postfix(ItemDetailsDisplay __instance, IItemDisplay _itemDisplay)
         {
             var itemDetailsDisplay = __instance;

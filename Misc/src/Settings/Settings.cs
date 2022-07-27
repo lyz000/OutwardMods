@@ -13,7 +13,6 @@ namespace Misc
         public static ConfigEntry<bool> DisplaySellPrice;
         public static ConfigEntry<bool> DisplayDurability;
         public static ConfigEntry<bool> ItemToCoins;
-        
 
         public static CharacterShareData CharaData0;
         public static CharacterShareData CharaData1;

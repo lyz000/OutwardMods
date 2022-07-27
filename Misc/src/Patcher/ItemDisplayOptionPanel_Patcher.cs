@@ -10,7 +10,7 @@ namespace Misc.Patcher
     {
         private static readonly ItemToCoinsAction itemToCoinsAction = new ItemToCoinsAction();
 
-        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions)), HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions), new Type[] { typeof(GameObject) }), HarmonyPostfix]
         static void GetActiveActions_Postfix(ItemDisplayOptionPanel __instance, GameObject pointerPress, ref List<int> __result)
         {
             if (itemToCoinsAction.IsEnabled && itemToCoinsAction.CanToCoins(__instance))
@@ -19,7 +19,7 @@ namespace Misc.Patcher
             }
         }
 
-        [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed)), HarmonyPrefix]
+        [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed), new Type[] { typeof(int) }), HarmonyPrefix]
         static void ActionHasBeenPressed_Prefix(ItemDisplayOptionPanel __instance, int _actionID)
         {
             if (itemToCoinsAction.ID == _actionID)
@@ -28,7 +28,7 @@ namespace Misc.Patcher
             }
         }
 
-        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText)), HarmonyPrefix]
+        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText), new Type[] { typeof(int) }), HarmonyPrefix]
         private static bool ItemDisplayOptionPanel_GetActionText_Prefix(int _actionID, ref string __result)
         {
             if (itemToCoinsAction.ID == _actionID)
