@@ -8,32 +8,30 @@ namespace Misc.Patcher
     [HarmonyPatch(typeof(ItemDisplayOptionPanel))]
     class ItemDisplayOptionPanel_Patcher
     {
-        private static readonly ItemToCoinsAction itemToCoinsAction = new ItemToCoinsAction();
-
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions), new Type[] { typeof(GameObject) }), HarmonyPostfix]
         static void GetActiveActions_Postfix(ItemDisplayOptionPanel __instance, GameObject pointerPress, ref List<int> __result)
         {
-            if (itemToCoinsAction.IsEnabled && itemToCoinsAction.CanToCoins(__instance))
+            if (ItemToCoinsAction.GetInstance(__instance).IsEnabled && ItemToCoinsAction.GetInstance(__instance).CanToCoins())
             {
-                __result = itemToCoinsAction.PatchAction(__result);
+                __result = ItemToCoinsAction.GetInstance(__instance).PatchAction(__result);
             }
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed), new Type[] { typeof(int) }), HarmonyPrefix]
         static void ActionHasBeenPressed_Prefix(ItemDisplayOptionPanel __instance, int _actionID)
         {
-            if (itemToCoinsAction.ID == _actionID)
+            if (ItemToCoinsAction.GetInstance(__instance).ID == _actionID)
             {
-                itemToCoinsAction.PerformAction(__instance);
+                ItemToCoinsAction.GetInstance(__instance).PerformAction();
             }
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText), new Type[] { typeof(int) }), HarmonyPrefix]
         private static bool ItemDisplayOptionPanel_GetActionText_Prefix(ItemDisplayOptionPanel __instance, int _actionID, ref string __result)
         {
-            if (itemToCoinsAction.ID == _actionID)
+            if (ItemToCoinsAction.GetInstance(__instance).ID == _actionID)
             {
-                __result = itemToCoinsAction.getActionText(__instance);
+                __result = ItemToCoinsAction.GetInstance(__instance).getActionText(__instance);
                 return false;
             }
             return true;
@@ -42,11 +40,70 @@ namespace Misc.Patcher
 
     internal class ItemToCoinsAction
     {
-        public readonly int ID = 4300;
+
+        public readonly int ID = 5000;
+
+        public bool IsExpired
+        {
+            get;
+            private set;
+        }
+
+        public ItemDisplayOptionPanel itemDisplayOptionPanel
+        {
+            get;
+            private set;
+        }
+
+        public ItemDisplay itemDisplay
+        {
+            get
+            {
+                return itemDisplayOptionPanel.m_activatedItemDisplay;
+            }
+        }
+
+        public Item item
+        {
+            get
+            {
+                return itemDisplay.RefItem;
+            }
+        }
+
+        public int sellPrice
+        {
+            get
+            {
+                return ModUtil.getEstimatedPrice(itemDisplay);
+            }
+        }
+
+        private ItemToCoinsAction(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        { 
+            this.itemDisplayOptionPanel = itemDisplayOptionPanel;
+        }
+
+        private static ItemToCoinsAction Instance;
+
+        public static ItemToCoinsAction GetInstance(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        {
+            if (Instance == null)
+            {
+                Instance = new ItemToCoinsAction(itemDisplayOptionPanel);
+                return Instance;
+            }
+
+            if (Instance.IsExpired)
+            {
+                Instance = new ItemToCoinsAction(itemDisplayOptionPanel);
+            }
+            return Instance;
+        }
+
         public string getActionText(ItemDisplayOptionPanel itemDisplayOptionPanel)
         {
-
-            return $"To Coins({ModUtil.getEstimatedPrice(itemDisplayOptionPanel.m_activatedItemDisplay)})";
+            return $"To coins({ModUtil.getEstimatedPrice(itemDisplayOptionPanel.m_activatedItemDisplay)})";
         }
 
         public bool IsEnabled
@@ -63,10 +120,9 @@ namespace Misc.Patcher
             return options;
         }
 
-        public void PerformAction(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        public void PerformAction()
         {
-            var isInventoryItem = IsItemInCharacterInventory(itemDisplayOptionPanel, out Item item);
-            if (!isInventoryItem)
+            if (itemDisplay == null)
             {
                 return;
             }
@@ -76,22 +132,15 @@ namespace Misc.Patcher
                 return;
             }
 
-            var itemDisplay = itemDisplayOptionPanel.m_activatedItemDisplay;
-            if (itemDisplay == null)
-            {
-                return;
-            }
-
-            var character = itemDisplayOptionPanel.LocalCharacter;
-            var inventory = character.Inventory;
-            var sellPrice = ModUtil.getEstimatedPrice(itemDisplay);
+            var inventory = itemDisplayOptionPanel.LocalCharacter.Inventory;
             inventory.AddMoney(sellPrice);
             inventory.TakeCurrencySound();
-            character.Inventory.RemoveItem(item.ItemID, 1);
+            item.RemoveQuantity(1);
             itemDisplayOptionPanel.CharacterUI.ShowInfoNotification($"+{sellPrice} coins, total {inventory.ItemCount(9000010)} coins.");
+            IsExpired = true;
         }
 
-        public bool IsItemSafeToCoins(Item item)
+        public bool IsItemSafeToCoins()
         {
             return item != null
                 //!item is WrittenNote &&
@@ -116,31 +165,24 @@ namespace Misc.Patcher
                 ;
         }
 
-        public bool IsItemInCharacterInventory(ItemDisplayOptionPanel itemDisplayOptionPanel, out Item item)
+        public bool NotMerchantItem()
         {
-            item = null;
-            var itemDisplay = itemDisplayOptionPanel.m_activatedItemDisplay;
-            if (itemDisplay == null)
+            if (item == null)
             {
                 return false;
             }
 
-            item = itemDisplay.RefItem;
-            var character = itemDisplayOptionPanel.LocalCharacter;
-            var inventory = character.Inventory;
-            return inventory.IsItemInBag(item.UID) || inventory.IsItemInPouch(item.UID);
+            if (item.ParentContainer is MerchantPouch)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public bool CanToCoins(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        public bool CanToCoins()
         {
-            if (IsItemInCharacterInventory(itemDisplayOptionPanel, out Item item))
-            {
-                if (IsItemSafeToCoins(item))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return NotMerchantItem() && IsItemSafeToCoins();
         }
     }
 }
