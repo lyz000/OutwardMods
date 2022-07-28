@@ -75,7 +75,7 @@ namespace Misc.Patcher
         {
             get
             {
-                return ModUtil.getEstimatedPrice(itemDisplay);
+                return ModUtil.GetEstimatedPrice(itemDisplay);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Misc.Patcher
 
         public string getActionText(ItemDisplayOptionPanel itemDisplayOptionPanel)
         {
-            return $"To coins({ModUtil.getEstimatedPrice(itemDisplayOptionPanel.m_activatedItemDisplay)})";
+            return $"To coins({ModUtil.GetEstimatedPrice(itemDisplayOptionPanel.m_activatedItemDisplay)})";
         }
 
         public bool IsEnabled

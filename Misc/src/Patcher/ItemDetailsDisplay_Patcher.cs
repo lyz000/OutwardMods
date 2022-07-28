@@ -56,7 +56,7 @@ namespace Misc.Patcher
                 if (_itemDisplay.RefItem.Value > 0 && _itemDisplay.RefItem.Weight > 0 && _itemDisplay.RefItem.IsSellable)
                 {
                     var row = itemDetailsDisplay.GetRow(itemDetailsDisplay.m_detailRows.Count);
-                    row.SetInfo("Sell", $"{ModUtil.getEstimatedPrice(_itemDisplay)}");
+                    row.SetInfo("Sell", $"{ModUtil.GetEstimatedPrice(_itemDisplay)}");
                 }
             }
             #endregion
