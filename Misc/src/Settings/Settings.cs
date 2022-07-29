@@ -13,6 +13,7 @@ namespace Misc
         public static ConfigEntry<bool> DisplaySellPrice;
         public static ConfigEntry<bool> DisplayDurability;
         public static ConfigEntry<bool> ItemToCoins;
+        public static ConfigEntry<bool> RepairEquipment;
 
         public static CharacterShareData CharaData0;
         public static CharacterShareData CharaData1;
@@ -30,9 +31,10 @@ namespace Misc
         public static void Init(ConfigFile config)
         {
             Config = config;
-            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), false, "Display the estimated sell price on item detail.\n Warning: May cause performace issue!");
-            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), false, "Display the durability for perishables on item detail.\n Warning: May cause performace issue!");
+            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), false, "Display the estimated sell price on item detail.\n Warning: May cause performace issue in item panel!");
+            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), false, "Display the durability for perishables on item detail.\n Warning: May cause performace issue in item panel!");
             ItemToCoins = Bind(SectionItem, nameof(ItemToCoins), true, "Add a action in item menu whitch trans item to coins.");
+            RepairEquipment = Bind(SectionItem, nameof(RepairEquipment), true, "Add a repair action for equipments in item menu, costs 10 coins");
 
             CharaData0 = new CharacterShareData(0);
             CharaData1 = new CharacterShareData(1);

@@ -4,7 +4,7 @@ namespace Misc.ItemAction
 {
     abstract class ItemActionBase
     {
-        public ItemDisplayOptionPanel ItemDisplayOptionPanel
+        public ItemDisplayOptionPanel ItemPanel
         {
             get;
             private set;
@@ -16,27 +16,27 @@ namespace Misc.ItemAction
             private set;
         }
 
-        public ItemDisplay itemDisplay
+        public ItemDisplay ItemDisplay
         {
             get
             {
-                return ItemDisplayOptionPanel.m_activatedItemDisplay;
+                return ItemPanel.m_activatedItemDisplay;
             }
         }
 
-        public Item item
+        public Item Item
         {
             get
             {
-                return itemDisplay.RefItem;
+                return ItemDisplay.RefItem;
             }
         }
 
-        public int sellPrice
+        public int SellPrice
         {
             get
             {
-                return ModUtil.GetEstimatedPrice(itemDisplay);
+                return ModUtil.GetEstimatedPrice(ItemDisplay);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Misc.ItemAction
 
         public ItemActionBase(ItemDisplayOptionPanel itemDisplayOptionPanel, int actionID)
         {
-            this.ItemDisplayOptionPanel = itemDisplayOptionPanel;
+            this.ItemPanel = itemDisplayOptionPanel;
             this.ActionID = actionID;
         }
 
@@ -58,10 +58,41 @@ namespace Misc.ItemAction
             return actions;
         }
 
+        public void PerformAction()
+        {
+            if (ItemDisplay == null)
+            {
+                return;
+            }
+
+            if (Item == null || Item is Skill)
+            {
+                return;
+            }
+
+            Action();
+            IsActionDone = true;
+        }
+
+        public bool NotMerchantItem()
+        {
+            if (Item == null)
+            {
+                return false;
+            }
+
+            if (Item.ParentContainer is MerchantPouch)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        abstract public bool DisplayAction();
+
         abstract public string GetActionText();
 
-        abstract public void PerformAction();
-
-        abstract public bool IsEnabled();
+        abstract protected void Action();
     }
 }

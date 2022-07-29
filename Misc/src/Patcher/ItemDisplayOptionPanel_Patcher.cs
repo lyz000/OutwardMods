@@ -12,9 +12,13 @@ namespace Misc.Patcher
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions), new Type[] { typeof(GameObject) }), HarmonyPostfix]
         static void GetActiveActions_Postfix(ItemDisplayOptionPanel __instance, GameObject pointerPress, ref List<int> __result)
         {
-            if (ItemToCoinsAction.GetInstance(__instance).IsEnabled() && ItemToCoinsAction.GetInstance(__instance).CanToCoins())
+            if (ItemToCoinsAction.GetInstance(__instance).DisplayAction())
             {
                 __result = ItemToCoinsAction.GetInstance(__instance).PatchAction(__result);
+            }
+            if (RepairEquipmentAction.GetInstance(__instance).DisplayAction())
+            {
+                __result = RepairEquipmentAction.GetInstance(__instance).PatchAction(__result);
             }
         }
 
@@ -25,6 +29,10 @@ namespace Misc.Patcher
             {
                 ItemToCoinsAction.GetInstance(__instance).PerformAction();
             }
+            if (RepairEquipmentAction.GetInstance(__instance).ActionID == _actionID)
+            {
+                RepairEquipmentAction.GetInstance(__instance).PerformAction();
+            }
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText), new Type[] { typeof(int) }), HarmonyPrefix]
@@ -33,6 +41,11 @@ namespace Misc.Patcher
             if (ItemToCoinsAction.GetInstance(__instance).ActionID == _actionID)
             {
                 __result = ItemToCoinsAction.GetInstance(__instance).GetActionText();
+                return false;
+            }
+            if (RepairEquipmentAction.GetInstance(__instance).ActionID == _actionID)
+            {
+                __result = RepairEquipmentAction.GetInstance(__instance).GetActionText();
                 return false;
             }
             return true;
