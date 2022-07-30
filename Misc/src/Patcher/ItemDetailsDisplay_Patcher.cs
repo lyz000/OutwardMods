@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
+using HarmonyLib;
 using static ItemDetailsDisplay;
 
 namespace Misc.Patcher

@@ -1,43 +1,43 @@
 ﻿namespace Misc.ItemAction
 {
-    class ItemToCoinsAction : ItemActionBase
+    class SellItemAction : ItemActionBase
     {
         
-        private ItemToCoinsAction(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        private SellItemAction(ItemDisplayOptionPanel itemDisplayOptionPanel)
             : base(itemDisplayOptionPanel, 5001) 
         {
         }
 
-        public static ItemToCoinsAction Instance
+        public static SellItemAction Instance
         {
             get;
             private set;
         }
 
-        public static ItemToCoinsAction GetInstance(ItemDisplayOptionPanel itemDisplayOptionPanel)
+        public static SellItemAction GetInstance(ItemDisplayOptionPanel itemDisplayOptionPanel)
         {
             if (Instance == null)
             {
-                Instance = new ItemToCoinsAction(itemDisplayOptionPanel);
+                Instance = new SellItemAction(itemDisplayOptionPanel);
                 return Instance;
             }
 
             if (Instance.IsActionDone)
             {
-                Instance = new ItemToCoinsAction(itemDisplayOptionPanel);
+                Instance = new SellItemAction(itemDisplayOptionPanel);
             }
             return Instance;
         }
 
         public override bool DisplayAction()
         {
-            return Settings.ItemToCoins.Value &&
+            return Settings.SellItem.Value &&
                 NotMerchantItem();
         }
 
         public override string GetActionText()
         {
-            return $"To coins({SellPrice})";
+            return $"Sell({SellPrice})";
         }
 
         protected override void Action()

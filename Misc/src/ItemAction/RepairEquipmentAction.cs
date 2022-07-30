@@ -1,4 +1,6 @@
-﻿namespace Misc.ItemAction
+﻿using System.Linq;
+
+namespace Misc.ItemAction
 {
     class RepairEquipmentAction : ItemActionBase
     {
@@ -32,8 +34,7 @@
         {
             return Settings.RepairEquipment.Value &&
                 NotMerchantItem() &&
-                Item.DurabilityRatio < 0.98f && // avoid display repair option when pick up food
-                (Item.IsEquippable || Item.IsPerishable);
+                Item.DurabilityRatio < 0.98f; // avoid display repair option when pick up food
         }
 
         public override string GetActionText()
@@ -51,7 +52,8 @@
                 return;
             }
 
-            inventory.GetOwnedItems(Item.ItemID).ForEach((item) => item.SetDurabilityRatio(1f));
+            Item.SetDurabilityRatio(1f);// for equipped
+            inventory.GetOwnedItems(Item.ItemID).ForEach((item) => item.SetDurabilityRatio(1f));// for stack
             inventory.RemoveMoney(10);
             inventory.TakeCurrencySound();
             ItemPanel.CharacterUI.ShowInfoNotification($"{Item.GetLocalizedName()} repaired, -10 coins.");

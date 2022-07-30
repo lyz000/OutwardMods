@@ -33,22 +33,14 @@ namespace Misc
                 });
             }
 
-            var keyForwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Forward, out int playerID01);
-            var keyBackwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Backward, out int playerID02);
-            var keyLeftHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Left, out int playerID03);
-            var keyRightHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Right, out int playerID04);
+            var keyForwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Forward);
+            var keyBackwardHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Backward);
+            var keyLeftHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Left);
+            var keyRightHeld = CustomKeybindings.GetKey(Settings.CustomKeyName.Right);
             // TODO fix which player Helds
             if (!keyForwardHeld && !keyBackwardHeld && !keyLeftHeld && !keyRightHeld)
             {
-                Settings.ForeachCharacterShareData((charaData) =>
-                {
-                    Settings.UseCharacterShareData(charaData.playerID, (charaData) =>
-                    {
-                        charaData.sprint = false;
-                        return 0;
-                    });
-                    return 0;
-                });
+                Settings.CharaData0.sprint = false;
             }
 
         }
