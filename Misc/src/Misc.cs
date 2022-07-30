@@ -26,7 +26,7 @@ namespace Misc
             // Handle KeyPress
             if (CustomKeybindings.GetKeyDown(Settings.CustomKeyName.ToggleSprint, out int playerID))
             {
-                Settings.UseCharacterShareData(playerID, (charaData) =>
+                Settings.UseCharacterShareData(playerID, charaData =>
                 {
                     charaData.sprint = !charaData.sprint;
                     return 0;

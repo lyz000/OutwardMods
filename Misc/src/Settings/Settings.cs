@@ -31,8 +31,8 @@ namespace Misc
         public static void Init(ConfigFile config)
         {
             Config = config;
-            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), false, "Display the estimated sell price on item detail.\n Warning: May cause performace issue in item panel!");
-            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), false, "Display the durability for perishables on item detail.\n Warning: May cause performace issue in item panel!");
+            DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), true, "Display the estimated sell price on item detail.");
+            DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), true, "Display the durability for perishables on item detail.");
             SellItem = Bind(SectionItem, nameof(SellItem), true, "Add a sell action in item menu.");
             RepairEquipment = Bind(SectionItem, nameof(RepairEquipment), true, "Add a repair action for equipments in item menu, costs 10 coins");
 

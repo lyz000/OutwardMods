@@ -34,7 +34,7 @@ namespace Misc.ItemAction
         {
             return Settings.RepairEquipment.Value &&
                 NotMerchantItem() &&
-                Item.DurabilityRatio < 0.98f; // avoid display repair option when pick up food
+                Item_.DurabilityRatio < 0.98f; // avoid display repair action when pick up new food
         }
 
         public override string GetActionText()
@@ -52,11 +52,14 @@ namespace Misc.ItemAction
                 return;
             }
 
-            Item.SetDurabilityRatio(1f);// for equipped
-            Item.ParentContainer.GetItemsFromID(Item.ItemID).ForEach((item) => item.SetDurabilityRatio(1f));// for stack
+            Item_.SetDurabilityRatio(1f);// for equipped
+            if (Item_.ParentContainer != null)
+            {
+                Item_.ParentContainer.GetItemsFromID(Item_.ItemID).ForEach(item => item.SetDurabilityRatio(1f));// for stack
+            }
             inventory.RemoveMoney(10);
             inventory.TakeCurrencySound();
-            ItemPanel.CharacterUI.ShowInfoNotification($"{Item.GetLocalizedName()} repaired, -10 coins.");
+            ItemPanel.CharacterUI.ShowInfoNotification($"{Item_.GetLocalizedName()} repaired, -10 coins.");
         }
     }
 }

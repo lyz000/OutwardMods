@@ -10,7 +10,7 @@ namespace Misc.Patcher
         static bool Sprint_Prefix(ControlsInput __instance, int _playerID, ref bool __result)
         {
             bool sprint = false;
-            Settings.UseCharacterShareData(_playerID, (charaData) => 
+            Settings.UseCharacterShareData(_playerID, charaData => 
             {
                 // replace ControlsInput.Sprint's return value
                 sprint = charaData.sprint;

@@ -42,12 +42,12 @@
 
         protected override void Action()
         {
-            if (ItemDisplay == null)
+            if (ItemDisplay_ == null)
             {
                 return;
             }
 
-            if (Item == null || Item is Skill)
+            if (Item_ == null || Item_ is Skill)
             {
                 return;
             }
@@ -55,7 +55,7 @@
             var inventory = ItemPanel.LocalCharacter.Inventory;
             inventory.AddMoney(SellPrice);
             inventory.TakeCurrencySound();
-            Item.RemoveQuantity(1);
+            Item_.RemoveQuantity(1);
             ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} coins, total {inventory.ItemCount(9000010)} coins.");
         }
     }

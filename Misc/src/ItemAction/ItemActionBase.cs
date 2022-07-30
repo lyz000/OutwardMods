@@ -16,7 +16,7 @@ namespace Misc.ItemAction
             private set;
         }
 
-        public ItemDisplay ItemDisplay
+        public ItemDisplay ItemDisplay_
         {
             get
             {
@@ -24,11 +24,11 @@ namespace Misc.ItemAction
             }
         }
 
-        public Item Item
+        public Item Item_
         {
             get
             {
-                return ItemDisplay.RefItem;
+                return ItemDisplay_.RefItem;
             }
         }
 
@@ -36,7 +36,7 @@ namespace Misc.ItemAction
         {
             get
             {
-                return ModUtil.GetEstimatedPrice(ItemDisplay);
+                return ModUtil.GetEstimatedPrice(ItemDisplay_);
             }
         }
 
@@ -60,12 +60,12 @@ namespace Misc.ItemAction
 
         public void PerformAction()
         {
-            if (ItemDisplay == null)
+            if (ItemDisplay_ == null)
             {
                 return;
             }
 
-            if (Item == null || Item is Skill)
+            if (Item_ == null || Item_ is Skill)
             {
                 return;
             }
@@ -76,12 +76,12 @@ namespace Misc.ItemAction
 
         public bool NotMerchantItem()
         {
-            if (Item == null)
+            if (Item_ == null)
             {
                 return false;
             }
 
-            if (Item.ParentContainer is MerchantPouch)
+            if (Item_.ParentContainer is MerchantPouch)
             {
                 return false;
             }

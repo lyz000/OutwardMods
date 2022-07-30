@@ -53,5 +53,46 @@ namespace Misc
 
             return sellPrice;
         }
+
+        public static void SetRowInfo(ItemDetailsDisplay itemDetailsDisplay, string dataName, string dataValue)
+        {
+            var row = itemDetailsDisplay.m_detailRows.Find(r => r.m_lblDataName.text == dataName);
+            if (row == null)
+            {
+                row = itemDetailsDisplay.GetRow(itemDetailsDisplay.m_detailRows.Count);
+            }
+            row.SetInfo(dataName, dataValue);
+            if (row.IsDisplayed)
+                return;
+            row.Show();
+        }
+
+        public static void AddDurabiliityInfo(ItemDetailsDisplay itemDetailsDisplay, Item item)
+        {
+            if (item.IsPerishable && item.CurrentDurability > 0)
+            {
+                if (item.TypeDisplay == "Equipment")
+                {
+                    SetRowInfo(itemDetailsDisplay,
+                        LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
+                        $"{item.CurrentDurability}/{item.MaxDurability}");
+                }
+                else
+                {
+                    if (item.PerishScript.DepletionRateModifier < .0001)
+                    {
+                        SetRowInfo(itemDetailsDisplay,
+                            LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
+                            $"[{ModUtil.GameTimeToDays(item.CurrentDurability / item.PerishScript.m_baseDepletionRate)}]");
+                    }
+                    else
+                    {
+                        SetRowInfo(itemDetailsDisplay,
+                            LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
+                            ModUtil.GameTimeToDays(item.CurrentDurability / item.PerishScript.DepletionRate));
+                    }
+                }
+            }
+        }
     }
 }
