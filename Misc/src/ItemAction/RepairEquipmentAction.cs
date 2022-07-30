@@ -53,7 +53,7 @@ namespace Misc.ItemAction
             }
 
             Item.SetDurabilityRatio(1f);// for equipped
-            inventory.GetOwnedItems(Item.ItemID).ForEach((item) => item.SetDurabilityRatio(1f));// for stack
+            Item.ParentContainer.GetItemsFromID(Item.ItemID).ForEach((item) => item.SetDurabilityRatio(1f));// for stack
             inventory.RemoveMoney(10);
             inventory.TakeCurrencySound();
             ItemPanel.CharacterUI.ShowInfoNotification($"{Item.GetLocalizedName()} repaired, -10 coins.");
