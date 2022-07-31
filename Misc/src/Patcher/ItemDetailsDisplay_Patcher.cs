@@ -40,7 +40,7 @@ namespace Misc.Patcher
             if (item == null)
                 return;
 
-            // if item is silver(9000010), NullReferenceException will occurs.
+            // if item is silver(9000010), NullReferenceException occurs.
 
             if (Settings.DisplaySellPrice.Value)
             {

@@ -37,7 +37,14 @@
 
         public override string GetActionText()
         {
-            return $"Sell({SellPrice})";
+            if (Item_.ItemID == 9000010)// silver coin
+            {
+                return "Buy Gold Ingot(100)";
+            }
+            else
+            {
+                return $"Sell({SellPrice})";
+            }
         }
 
         protected override void Action()
@@ -53,10 +60,25 @@
             }
 
             var inventory = ItemPanel.LocalCharacter.Inventory;
-            inventory.AddMoney(SellPrice);
-            inventory.TakeCurrencySound();
-            Item_.RemoveQuantity(1);
-            ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} coins, total {inventory.ItemCount(9000010)} coins.");
+            if (Item_.ItemID == 9000010)// silver coin
+            {
+                if (inventory.AvailableMoney < 100)
+                {
+                    ItemPanel.CharacterUI.ShowInfoNotification($"Requires 100 Coins!");
+                    return;
+                }
+                inventory.RemoveMoney(100);
+                inventory.TakeCurrencySound();
+                ItemPanel.CharacterUI
+                    .ShowInfoNotification($"-100 Coins and +1 Gold Ingot, total {inventory.AvailableMoney} coins and {inventory.ItemCount(6300030)} Gold Ingot.");
+            }
+            else
+            {
+                inventory.AddMoney(SellPrice);
+                inventory.TakeCurrencySound();
+                Item_.RemoveQuantity(1);
+                ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} Coins, total {inventory.AvailableMoney} Coins.");
+            }
         }
     }
 }

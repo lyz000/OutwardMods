@@ -73,21 +73,21 @@ namespace Misc
             {
                 if (item.TypeDisplay == "Equipment")
                 {
-                    SetRowInfo(itemDetailsDisplay,
+                    ModUtil.SetRowInfo(itemDetailsDisplay,
                         LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
-                        $"{item.CurrentDurability}/{item.MaxDurability}");
+                        $"{Math.Ceiling(item.CurrentDurability)}/{item.MaxDurability}");
                 }
                 else
                 {
                     if (item.PerishScript.DepletionRateModifier < .0001)
                     {
-                        SetRowInfo(itemDetailsDisplay,
+                        ModUtil.SetRowInfo(itemDetailsDisplay,
                             LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
                             $"[{ModUtil.GameTimeToDays(item.CurrentDurability / item.PerishScript.m_baseDepletionRate)}]");
                     }
                     else
                     {
-                        SetRowInfo(itemDetailsDisplay,
+                        ModUtil.SetRowInfo(itemDetailsDisplay,
                             LocalizationManager.Instance.GetLoc("ItemStat_Durability"),
                             ModUtil.GameTimeToDays(item.CurrentDurability / item.PerishScript.DepletionRate));
                     }
