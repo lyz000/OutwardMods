@@ -33,7 +33,7 @@ namespace Misc.ItemAction
         public override bool DisplayAction()
         {
             return Settings.RepairEquipment.Value &&
-                NotMerchantItem() &&
+                ModUtil.NotMerchantItem(Item_) &&
                 Item_.DurabilityRatio < 0.98f; // avoid display repair action when pick up new food
         }
 

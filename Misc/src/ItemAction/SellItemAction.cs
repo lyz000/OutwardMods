@@ -32,19 +32,12 @@
         public override bool DisplayAction()
         {
             return Settings.SellItem.Value &&
-                NotMerchantItem();
+                ModUtil.NotMerchantItem(Item_);
         }
 
         public override string GetActionText()
         {
-            if (Item_.ItemID == 9000010)// silver coin
-            {
-                return "Buy Gold Ingot(100)";
-            }
-            else
-            {
-                return $"Sell({SellPrice})";
-            }
+            return $"Sell({SellPrice})";
         }
 
         protected override void Action()
@@ -58,27 +51,12 @@
             {
                 return;
             }
-
+  
             var inventory = ItemPanel.LocalCharacter.Inventory;
-            if (Item_.ItemID == 9000010)// silver coin
-            {
-                if (inventory.AvailableMoney < 100)
-                {
-                    ItemPanel.CharacterUI.ShowInfoNotification($"Requires 100 Coins!");
-                    return;
-                }
-                inventory.RemoveMoney(100);
-                inventory.TakeCurrencySound();
-                ItemPanel.CharacterUI
-                    .ShowInfoNotification($"-100 Coins and +1 Gold Ingot, total {inventory.AvailableMoney} coins and {inventory.ItemCount(6300030)} Gold Ingot.");
-            }
-            else
-            {
-                inventory.AddMoney(SellPrice);
-                inventory.TakeCurrencySound();
-                Item_.RemoveQuantity(1);
-                ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} Coins, total {inventory.AvailableMoney} Coins.");
-            }
+            inventory.AddMoney(SellPrice);
+            inventory.TakeCurrencySound();
+            Item_.RemoveQuantity(1);
+            ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} Coins, total {inventory.AvailableMoney} Coins.");
         }
     }
 }

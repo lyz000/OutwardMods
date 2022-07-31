@@ -74,21 +74,6 @@ namespace Misc.ItemAction
             IsActionDone = true;
         }
 
-        public bool NotMerchantItem()
-        {
-            if (Item_ == null)
-            {
-                return false;
-            }
-
-            if (Item_.ParentContainer is MerchantPouch)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         abstract public bool DisplayAction();
 
         abstract public string GetActionText();

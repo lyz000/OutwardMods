@@ -94,5 +94,20 @@ namespace Misc
                 }
             }
         }
+
+        public static bool NotMerchantItem(Item item)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (item.ParentContainer is MerchantPouch)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
