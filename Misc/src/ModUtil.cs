@@ -109,5 +109,13 @@ namespace Misc
 
             return true;
         }
+
+        public static void ShowStashPanel(int triggerPlayerID, int targetPlayerID)
+        {
+            var triggerCharacter = Settings.GetCharacterShareData(triggerPlayerID).getCharacter();
+            var targetStash = Settings.GetCharacterShareData(targetPlayerID).getCharacter().Stash;
+            triggerCharacter.CharacterUI.StashPanel.SetStash(targetStash);
+            targetStash.ShowContent(triggerCharacter);
+        }
     }
 }

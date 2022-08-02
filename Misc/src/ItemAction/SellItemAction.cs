@@ -56,7 +56,7 @@
             inventory.AddMoney(SellPrice);
             inventory.TakeCurrencySound();
             Item_.RemoveQuantity(1);
-            ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} Coins, total {inventory.AvailableMoney} Coins.");
+            ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} coins, total {inventory.AvailableMoney} coins.");
         }
     }
 }
