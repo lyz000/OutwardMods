@@ -4,10 +4,26 @@ namespace Misc.ItemAction
 {
     abstract class ItemActionBase
     {
-        public ItemDisplayOptionPanel ItemPanel
+        public ItemDisplayOptionPanel itemPanel
         {
             get;
             private set;
+        }
+
+        public ItemDisplay itemDisplay
+        {
+            get
+            {
+                return itemPanel.m_activatedItemDisplay;
+            }
+        }
+
+        public Item item
+        {
+            get
+            {
+                return itemDisplay.RefItem;
+            }
         }
 
         public int ActionID
@@ -16,27 +32,11 @@ namespace Misc.ItemAction
             private set;
         }
 
-        public ItemDisplay ItemDisplay_
-        {
-            get
-            {
-                return ItemPanel.m_activatedItemDisplay;
-            }
-        }
-
-        public Item Item_
-        {
-            get
-            {
-                return ItemDisplay_.RefItem;
-            }
-        }
-
         public int SellPrice
         {
             get
             {
-                return ModUtil.GetEstimatedPrice(ItemDisplay_);
+                return ModUtil.GetEstimatedPrice(itemDisplay);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Misc.ItemAction
 
         public ItemActionBase(ItemDisplayOptionPanel itemDisplayOptionPanel, int actionID)
         {
-            this.ItemPanel = itemDisplayOptionPanel;
+            this.itemPanel = itemDisplayOptionPanel;
             this.ActionID = actionID;
         }
 
@@ -60,12 +60,12 @@ namespace Misc.ItemAction
 
         public void PerformAction()
         {
-            if (ItemDisplay_ == null)
+            if (itemDisplay == null)
             {
                 return;
             }
 
-            if (Item_ == null || Item_ is Skill)
+            if (item == null || item is Skill)
             {
                 return;
             }

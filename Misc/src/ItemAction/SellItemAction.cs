@@ -32,7 +32,7 @@
         public override bool DisplayAction()
         {
             return Settings.SellItem.Value &&
-                ModUtil.NotMerchantItem(Item_);
+                ModUtil.NotMerchantItem(item);
         }
 
         public override string GetActionText()
@@ -42,21 +42,21 @@
 
         protected override void Action()
         {
-            if (ItemDisplay_ == null)
+            if (itemDisplay == null)
             {
                 return;
             }
 
-            if (Item_ == null || Item_ is Skill)
+            if (item == null || item is Skill)
             {
                 return;
             }
   
-            var inventory = ItemPanel.LocalCharacter.Inventory;
+            var inventory = itemPanel.LocalCharacter.Inventory;
             inventory.AddMoney(SellPrice);
             inventory.TakeCurrencySound();
-            Item_.RemoveQuantity(1);
-            ItemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} coins, total {inventory.AvailableMoney} coins.");
+            item.RemoveQuantity(1);
+            itemPanel.CharacterUI.ShowInfoNotification($"+{SellPrice} coins, total {inventory.AvailableMoney} coins.");
         }
     }
 }

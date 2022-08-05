@@ -1,12 +1,14 @@
 ﻿using System;
 using HarmonyLib;
 
-namespace Misc.Patcher
+namespace Misc.Patch
 {
     [HarmonyPatch(typeof(ControlsInput))]
-    class ControlsInput_Patcher
+    class ControlsInput_Patch
     {
-        [HarmonyPatch(nameof(ControlsInput.Sprint), new Type[] { typeof(int) }), HarmonyPrefix]
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ControlsInput.Sprint))]
+        [HarmonyPatch(new Type[] { typeof(int) })]
         static bool Sprint_Prefix(ControlsInput __instance, int _playerID, ref bool __result)
         {
             if (Settings.EnableToggleSprintKey.Value)

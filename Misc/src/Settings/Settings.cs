@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 using System;
 using SideLoader;
+using UnityEngine;
 
 namespace Misc
 {
@@ -11,6 +12,7 @@ namespace Misc
 
         public const string SectionFunction = "Function";
         public static ConfigEntry<bool> EnableToggleSprintKey;
+        public static ConfigEntry<bool> EnableSuperSpeedKey;
 
         public const string SectionItem = "Item";
         public static ConfigEntry<bool> DisplaySellPrice;
@@ -31,6 +33,8 @@ namespace Misc
             public const string Left = "Left";
             public const string Right = "Right";
 
+            public const string ToggleSuperSpeed = "Toggle Super Speed";
+
             public const string OpenStash1 = "Open Stash 1P";
             public const string OpenStash2 = "Open Stash 2P";
         }
@@ -39,12 +43,14 @@ namespace Misc
         {
             Config = config;
 
-            EnableToggleSprintKey = Bind(SectionFunction, nameof(EnableToggleSprintKey), true, "Enable/Disable Sprint key added in game input setting.");
+            EnableToggleSprintKey = Bind(SectionFunction, nameof(EnableToggleSprintKey), false, "Enable/Disable Sprint key added in game input setting.");
             CustomKeybindings.AddAction(CustomKeyName.ToggleSprint, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(CustomKeyName.Forward, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(CustomKeyName.Backward, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(CustomKeyName.Left, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(CustomKeyName.Right, KeybindingsCategory.CustomKeybindings, ControlType.Both);
+            EnableSuperSpeedKey = Bind(SectionFunction, nameof(EnableSuperSpeedKey), false, "Enable/Disable key to toggle 'Code Sonic' super speed for sprint in game input setting.");
+            CustomKeybindings.AddAction(CustomKeyName.ToggleSuperSpeed, KeybindingsCategory.CustomKeybindings, ControlType.Both);
 
             DisplaySellPrice = Bind(SectionItem, nameof(DisplaySellPrice), true, "Display the estimated sell price on item detail.");
             DisplayDurability = Bind(SectionItem, nameof(DisplayDurability), true, "Display the durability for perishables on item detail.");

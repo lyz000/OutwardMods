@@ -2,12 +2,14 @@
 using HarmonyLib;
 using static ItemDetailsDisplay;
 
-namespace Misc.Patcher
+namespace Misc.Patch
 {
     [HarmonyPatch(typeof(ItemDetailsDisplay))]
-    class ItemDetailsDisplay_Patcher
+    class ItemDetailsDisplay_Patch
     {
-        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDetail), new Type[] { typeof(int), typeof(DisplayedInfos) }), HarmonyPostfix]
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDetail))]
+        [HarmonyPatch(new Type[] { typeof(int), typeof(DisplayedInfos) })]
         static void RefreshDetail_Postfix(ItemDetailsDisplay __instance, int _rowIndex, DisplayedInfos _infoType)
         {
             var itemDetailsDisplay = __instance;
@@ -28,7 +30,9 @@ namespace Misc.Patcher
             }
         }
 
-        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDisplay), new Type[] { typeof(IItemDisplay) }), HarmonyPostfix]
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDetailsDisplay.RefreshDisplay))]
+        [HarmonyPatch(new Type[] { typeof(IItemDisplay) })]
         static void RefreshDisplay_Postfix(ItemDetailsDisplay __instance, IItemDisplay _itemDisplay)
         {
             var itemDetailsDisplay = __instance;

@@ -33,8 +33,8 @@ namespace Misc.ItemAction
         public override bool DisplayAction()
         {
             return Settings.RepairEquipment.Value &&
-                ModUtil.NotMerchantItem(Item_) &&
-                Item_.DurabilityRatio < 0.98f; // avoid display repair action when pick up new food
+                ModUtil.NotMerchantItem(item) &&
+                item.DurabilityRatio < 0.98f; // avoid display repair action when pick up new food
         }
 
         public override string GetActionText()
@@ -44,22 +44,22 @@ namespace Misc.ItemAction
 
         protected override void Action()
         {
-            var inventory = ItemPanel.LocalCharacter.Inventory;
+            var inventory = itemPanel.LocalCharacter.Inventory;
             var cost = 10;
             if (inventory.AvailableMoney < cost)
             {
-                ItemPanel.CharacterUI.ShowInfoNotification($"No enough coins({cost}).");
+                itemPanel.CharacterUI.ShowInfoNotification($"No enough coins({cost}).");
                 return;
             }
 
-            Item_.SetDurabilityRatio(1f);// for equipped
-            if (Item_.ParentContainer != null)
+            item.SetDurabilityRatio(1f);// for equipped
+            if (item.ParentContainer != null)
             {
-                Item_.ParentContainer.GetItemsFromID(Item_.ItemID).ForEach(item => item.SetDurabilityRatio(1f));// for stack
+                item.ParentContainer.GetItemsFromID(item.ItemID).ForEach(item => item.SetDurabilityRatio(1f));// for stack
             }
             inventory.RemoveMoney(10);
             inventory.TakeCurrencySound();
-            ItemPanel.CharacterUI.ShowInfoNotification($"{Item_.GetLocalizedName()} repaired, -10 coins.");
+            itemPanel.CharacterUI.ShowInfoNotification($"{item.name} repaired, -10 coins.");
         }
     }
 }

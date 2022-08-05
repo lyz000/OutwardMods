@@ -60,6 +60,21 @@ namespace Misc
                     ModUtil.ShowStashPanel(playerIDOpenStash1, Settings.CharaData1.playerID);
                 }
             }
+
+            if (Settings.EnableSuperSpeedKey.Value)
+            {
+                // Handle KeyPress for toggle super speed
+                if (CustomKeybindings.GetKeyDown(Settings.CustomKeyName.ToggleSuperSpeed, out int playerIDStoggleSuperSpeed))
+                {
+                    Settings.UseCharacterShareData(playerIDStoggleSuperSpeed, charaData =>
+                    {
+                        charaData.superSpeed = !charaData.superSpeed;
+                        var superSpeedTip = charaData.superSpeed ? "ON" : "OFF";
+                        charaData.getCharacter().CharacterUI.ShowInfoNotification($"Super Speed is {superSpeedTip}.");
+                        return 0;
+                    });
+                }
+            }
         }
     }
 }

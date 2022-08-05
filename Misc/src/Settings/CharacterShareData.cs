@@ -4,6 +4,8 @@
     {
         public int playerID = -1;
         public bool sprint = false;
+        public bool superSpeed = false;
+
         public CharacterShareData(int playerID)
         {
             this.playerID = playerID;

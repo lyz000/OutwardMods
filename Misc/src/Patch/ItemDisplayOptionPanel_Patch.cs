@@ -4,12 +4,14 @@ using HarmonyLib;
 using UnityEngine;
 using Misc.ItemAction;
 
-namespace Misc.Patcher
+namespace Misc.Patch
 {
     [HarmonyPatch(typeof(ItemDisplayOptionPanel))]
-    class ItemDisplayOptionPanel_Patcher
+    class ItemDisplayOptionPanel_Patch
     {
-        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions), new Type[] { typeof(GameObject) }), HarmonyPostfix]
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions))]
+        [HarmonyPatch(new Type[] { typeof(GameObject) })]
         static void GetActiveActions_Postfix(ItemDisplayOptionPanel __instance, GameObject pointerPress, ref List<int> __result)
         {
             if (SellItemAction.GetInstance(__instance).DisplayAction())
@@ -22,7 +24,9 @@ namespace Misc.Patcher
             }
         }
 
-        [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed), new Type[] { typeof(int) }), HarmonyPrefix]
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed))]
+        [HarmonyPatch(new Type[] { typeof(int) })]
         static void ActionHasBeenPressed_Prefix(ItemDisplayOptionPanel __instance, int _actionID)
         {
             if (SellItemAction.GetInstance(__instance).ActionID == _actionID)
