@@ -59,7 +59,7 @@ namespace Misc.ItemAction
             }
             inventory.RemoveMoney(10);
             inventory.TakeCurrencySound();
-            itemPanel.CharacterUI.ShowInfoNotification($"{item.name} repaired, -10 coins.");
+            itemPanel.CharacterUI.ShowInfoNotification($"{item.Name} repaired, -10 coins.");
         }
     }
 }
